@@ -1,0 +1,1490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Git & GitHub — Zero to Hero</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #09090b;
+  --surface: #111115;
+  --surface2: #1c1c22;
+  --surface3: #26262e;
+  --border: #2e2e38;
+  --border2: #3d3d4a;
+  --text: #f0f0f4;
+  --text2: #9898a8;
+  --text3: #5a5a6e;
+  --accent: #a3e635;
+  --accent-dim: rgba(163,230,53,0.08);
+  --accent-border: rgba(163,230,53,0.25);
+  --blue: #60a5fa;
+  --blue-dim: rgba(96,165,250,0.08);
+  --blue-border: rgba(96,165,250,0.3);
+  --amber: #fbbf24;
+  --amber-dim: rgba(251,191,36,0.08);
+  --amber-border: rgba(251,191,36,0.3);
+  --red: #f87171;
+  --red-dim: rgba(248,113,113,0.08);
+  --red-border: rgba(248,113,113,0.3);
+  --green: #4ade80;
+  --green-dim: rgba(74,222,128,0.08);
+  --green-border: rgba(74,222,128,0.3);
+  --sidebar-w: 268px;
+  --header-h: 52px;
+  --radius: 8px;
+  --radius-lg: 12px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { height: 100%; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  height: 100%;
+  display: flex;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── SIDEBAR ─── */
+aside {
+  width: var(--sidebar-w);
+  flex-shrink: 0;
+  height: 100vh;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sidebar-brand {
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.brand-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.brand-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.progress-bar-wrap {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.progress-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 7px;
+}
+.progress-meta span {
+  font-size: 11px;
+  color: var(--text3);
+  font-family: 'JetBrains Mono', monospace;
+}
+.progress-meta .progress-count {
+  color: var(--accent);
+  font-weight: 500;
+}
+.progress-track {
+  height: 3px;
+  background: var(--surface3);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width .4s ease;
+  width: 0%;
+}
+
+.nav-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 0 20px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--surface3) transparent;
+}
+.nav-scroll::-webkit-scrollbar { width: 4px; }
+.nav-scroll::-webkit-scrollbar-track { background: transparent; }
+.nav-scroll::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 2px; }
+
+.nav-section-label {
+  padding: 14px 20px 4px;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--text3);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 20px;
+  cursor: pointer;
+  border-left: 2px solid transparent;
+  transition: all .15s;
+  position: relative;
+}
+.nav-item:hover { background: var(--surface2); }
+.nav-item:hover .nav-label { color: var(--text); }
+.nav-item.active {
+  background: var(--accent-dim);
+  border-left-color: var(--accent);
+}
+.nav-item.active .nav-label { color: var(--text); font-weight: 500; }
+.nav-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border2);
+  background: transparent;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .2s;
+  font-size: 9px;
+}
+.nav-item.active .nav-dot {
+  border-color: var(--accent);
+  background: var(--accent-dim);
+  color: var(--accent);
+}
+.nav-item.done .nav-dot {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #0a0a0a;
+  font-weight: 700;
+}
+.nav-label {
+  font-size: 12.5px;
+  color: var(--text2);
+  line-height: 1.4;
+}
+.nav-item.done .nav-label { color: var(--text2); }
+
+/* ─── MAIN AREA ─── */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100vh;
+}
+
+.topbar {
+  height: var(--header-h);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  padding: 0 40px;
+  gap: 16px;
+  flex-shrink: 0;
+}
+.topbar-crumb {
+  font-size: 12px;
+  color: var(--text3);
+  font-family: 'JetBrains Mono', monospace;
+}
+.topbar-sep { color: var(--text3); font-size: 12px; }
+.topbar-title {
+  font-size: 13px;
+  color: var(--text2);
+  font-weight: 500;
+}
+.topbar-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.kbd {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  color: var(--text3);
+}
+
+/* ─── CONTENT SCROLL ─── */
+.content-scroll {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--surface3) transparent;
+}
+.content-scroll::-webkit-scrollbar { width: 5px; }
+.content-scroll::-webkit-scrollbar-track { background: transparent; }
+.content-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+.chapter {
+  display: none;
+  animation: fadeIn .2s ease;
+}
+.chapter.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+.chapter-inner {
+  max-width: 740px;
+  margin: 0 auto;
+  padding: 44px 40px 0;
+}
+
+/* ─── TYPOGRAPHY ─── */
+.chapter-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin-bottom: 18px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.badge-foundations { background: var(--blue-dim); color: var(--blue); border: 1px solid var(--blue-border); }
+.badge-daily { background: var(--green-dim); color: var(--green); border: 1px solid var(--green-border); }
+.badge-branching { background: var(--amber-dim); color: var(--amber); border: 1px solid var(--amber-border); }
+.badge-recovery { background: var(--red-dim); color: var(--red); border: 1px solid var(--red-border); }
+.badge-github { background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent-border); }
+
+.chapter-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.2;
+  margin-bottom: 14px;
+}
+.chapter-lead {
+  font-size: 15px;
+  color: var(--text2);
+  line-height: 1.75;
+  margin-bottom: 28px;
+}
+
+h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 28px 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+h3::before {
+  content: '';
+  display: inline-block;
+  width: 3px;
+  height: 14px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+p {
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.8;
+  margin-bottom: 12px;
+}
+code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12.5px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  padding: 1px 6px;
+  border-radius: 4px;
+  color: var(--accent);
+}
+strong { color: var(--text); font-weight: 500; }
+em { color: var(--text2); font-style: italic; }
+
+/* ─── CODE BLOCKS ─── */
+.code-block {
+  margin: 10px 0 18px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+}
+.code-lang {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.copy-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  padding: 3px 10px;
+  border-radius: 4px;
+  border: 1px solid var(--border2);
+  background: transparent;
+  color: var(--text3);
+  cursor: pointer;
+  transition: all .15s;
+}
+.copy-btn:hover { background: var(--surface3); color: var(--text); border-color: var(--border2); }
+.copy-btn.copied { color: var(--accent); border-color: var(--accent-border); }
+
+pre {
+  background: var(--surface);
+  padding: 16px 18px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12.5px;
+  line-height: 1.8;
+  color: var(--text);
+  overflow-x: auto;
+  white-space: pre;
+}
+pre .comment { color: var(--text3); }
+pre .branch-main { color: var(--blue); }
+pre .branch-feat { color: var(--green); }
+
+/* ─── CALLOUTS ─── */
+.callout {
+  display: flex;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  margin: 14px 0 20px;
+  font-size: 13.5px;
+  line-height: 1.7;
+  border: 1px solid;
+}
+.callout-icon {
+  flex-shrink: 0;
+  font-size: 14px;
+  margin-top: 1px;
+}
+.callout-body { color: inherit; }
+.callout-body code { font-size: 12px; }
+.callout.info { background: var(--blue-dim); border-color: var(--blue-border); color: #93c5fd; }
+.callout.warn { background: var(--amber-dim); border-color: var(--amber-border); color: #fcd34d; }
+.callout.danger { background: var(--red-dim); border-color: var(--red-border); color: #fca5a5; }
+.callout.success { background: var(--green-dim); border-color: var(--green-border); color: #86efac; }
+.callout code { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.1); color: inherit; }
+
+/* ─── CARDS ─── */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 12px 0 20px;
+}
+.card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px 18px;
+}
+.card-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
+  font-family: 'Syne', sans-serif;
+}
+.card-title.green { color: var(--green); }
+.card-title.red { color: var(--red); }
+.card p { font-size: 13px; margin: 0; }
+.card code { font-size: 11.5px; }
+
+/* ─── FLOW DIAGRAM ─── */
+.flow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 16px 0 20px;
+}
+.flow-box {
+  font-size: 12px;
+  padding: 8px 14px;
+  border-radius: var(--radius);
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  font-weight: 500;
+  line-height: 1.4;
+  text-align: center;
+}
+.flow-box small { display: block; font-size: 10px; color: var(--text3); margin-top: 2px; font-weight: 400; }
+.flow-box.highlight { background: var(--blue-dim); border-color: var(--blue-border); color: var(--blue); }
+.flow-arrow { color: var(--text3); font-size: 16px; }
+
+/* ─── STEPS ─── */
+.steps { display: flex; flex-direction: column; gap: 10px; margin: 14px 0 20px; }
+.step {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.step-num {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--accent-dim);
+  border: 1px solid var(--accent-border);
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.step-text { font-size: 13.5px; color: var(--text2); line-height: 1.5; }
+
+/* ─── BRANCH VIS ─── */
+.branch-vis {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  line-height: 2;
+  padding: 16px 18px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  margin: 12px 0 20px;
+  color: var(--text2);
+  overflow-x: auto;
+}
+.branch-vis .bm { color: var(--blue); font-weight: 500; }
+.branch-vis .bf { color: var(--green); font-weight: 500; }
+
+/* ─── CHAPTER FOOTER ─── */
+.chapter-footer {
+  max-width: 740px;
+  margin: 0 auto;
+  padding: 32px 40px 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-top: 1px solid var(--border);
+  margin-top: 40px;
+}
+.mark-done-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 18px;
+  border-radius: var(--radius);
+  border: 1px solid var(--accent-border);
+  background: var(--accent-dim);
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all .2s;
+  font-family: 'DM Sans', sans-serif;
+}
+.mark-done-btn:hover { background: rgba(163,230,53,0.15); }
+.mark-done-btn.done { background: var(--accent); color: #0a0a0a; border-color: var(--accent); }
+.nav-btns { display: flex; gap: 8px; }
+.nav-btn {
+  padding: 9px 16px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border2);
+  background: var(--surface2);
+  color: var(--text2);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all .15s;
+  font-family: 'DM Sans', sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.nav-btn:hover { background: var(--surface3); color: var(--text); border-color: var(--border2); }
+.nav-btn:disabled { opacity: .3; pointer-events: none; }
+.nav-btn.next { background: var(--surface3); }
+</style>
+</head>
+<body>
+
+<!-- ═══ SIDEBAR ═══ -->
+<aside>
+  <div class="sidebar-brand">
+    <div class="brand-eyebrow">// course</div>
+    <div class="brand-title">Git & GitHub<br>Zero to Hero</div>
+  </div>
+
+  <div class="progress-bar-wrap">
+    <div class="progress-meta">
+      <span>Progress</span>
+      <span class="progress-count" id="prog-count">0 / 14</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="prog-fill"></div>
+    </div>
+  </div>
+
+  <div class="nav-scroll">
+    <div class="nav-section-label">Foundations</div>
+    <div class="nav-item active" data-i="0">
+      <div class="nav-dot">1</div>
+      <span class="nav-label">Git vs GitHub</span>
+    </div>
+    <div class="nav-item" data-i="1">
+      <div class="nav-dot">2</div>
+      <span class="nav-label">Core concepts</span>
+    </div>
+    <div class="nav-item" data-i="2">
+      <div class="nav-dot">3</div>
+      <span class="nav-label">First-time setup</span>
+    </div>
+
+    <div class="nav-section-label">Daily Use</div>
+    <div class="nav-item" data-i="3">
+      <div class="nav-dot">4</div>
+      <span class="nav-label">Your first repo</span>
+    </div>
+    <div class="nav-item" data-i="4">
+      <div class="nav-dot">5</div>
+      <span class="nav-label">The commit loop</span>
+    </div>
+    <div class="nav-item" data-i="5">
+      <div class="nav-dot">6</div>
+      <span class="nav-label">Push &amp; pull</span>
+    </div>
+
+    <div class="nav-section-label">Branching</div>
+    <div class="nav-item" data-i="6">
+      <div class="nav-dot">7</div>
+      <span class="nav-label">What is a branch</span>
+    </div>
+    <div class="nav-item" data-i="7">
+      <div class="nav-dot">8</div>
+      <span class="nav-label">When to branch</span>
+    </div>
+    <div class="nav-item" data-i="8">
+      <div class="nav-dot">9</div>
+      <span class="nav-label">Merge &amp; conflicts</span>
+    </div>
+
+    <div class="nav-section-label">Recovery</div>
+    <div class="nav-item" data-i="9">
+      <div class="nav-dot">10</div>
+      <span class="nav-label">Undo &amp; rollback</span>
+    </div>
+
+    <div class="nav-section-label">GitHub Features</div>
+    <div class="nav-item" data-i="10">
+      <div class="nav-dot">11</div>
+      <span class="nav-label">.gitignore</span>
+    </div>
+    <div class="nav-item" data-i="11">
+      <div class="nav-dot">12</div>
+      <span class="nav-label">README &amp; Issues</span>
+    </div>
+    <div class="nav-item" data-i="12">
+      <div class="nav-dot">13</div>
+      <span class="nav-label">GitHub Actions</span>
+    </div>
+    <div class="nav-item" data-i="13">
+      <div class="nav-dot">14</div>
+      <span class="nav-label">Your workflow</span>
+    </div>
+  </div>
+</aside>
+
+<!-- ═══ MAIN ═══ -->
+<div class="main">
+  <div class="topbar">
+    <span class="topbar-crumb" id="tb-section">Foundations</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title" id="tb-title">Git vs GitHub</span>
+    <div class="topbar-right">
+      <span class="kbd">←</span>
+      <span class="kbd">→</span>
+      <span style="font-size:11px;color:var(--text3);margin-left:2px">navigate</span>
+    </div>
+  </div>
+
+  <div class="content-scroll" id="scroll-area">
+
+    <!-- ── Chapter 0 ── -->
+    <div class="chapter active" id="ch0">
+      <div class="chapter-inner">
+        <div class="chapter-badge badge-foundations">Foundations</div>
+        <h1 class="chapter-title">Git vs GitHub — they are not the same thing</h1>
+        <p class="chapter-lead">This is the #1 confusion for beginners. Git and GitHub are two separate things that happen to work beautifully together.</p>
+
+        <div class="two-col">
+          <div class="card">
+            <div class="card-title">Git</div>
+            <p>A tool installed on your computer. It tracks every change you make to your files, lets you save snapshots (commits), and manages versions — entirely offline. Think of it as a time machine for your code.</p>
+          </div>
+          <div class="card">
+            <div class="card-title">GitHub</div>
+            <p>A website that stores your Git history in the cloud. It's a remote backup of your project, plus collaboration tools like Issues, Pull Requests, and Actions. You push your local Git history up to GitHub.</p>
+          </div>
+        </div>
+
+        <div class="callout info">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">Git is the engine. GitHub is the garage where you park it. You can use Git with no internet — you just can't share or backup until you push to GitHub.</div>
+        </div>
+
+        <h3>What you've been doing vs what you should do</h3>
+        <div class="two-col">
+          <div class="card">
+            <div class="card-title red">What you do now</div>
+            <p>Zip folder → upload to GitHub. This is basically just file storage. GitHub can't see your history, you can't rollback, you can't branch.</p>
+          </div>
+          <div class="card">
+            <div class="card-title green">What Git gives you</div>
+            <p>Every meaningful change is a commit. GitHub stores all of them. You can jump to any commit in history, branch off to experiment, and merge it back.</p>
+          </div>
+        </div>
+      </div>
+      <div class="chapter-footer">
+        <button class="mark-done-btn" data-i="0">✦ Mark complete</button>
+        <div class="nav-btns">
+          <button class="nav-btn" onclick="go(current-1)" id="prev0" disabled>← Prev</button>
+          <button class="nav-btn next" onclick="go(1)">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Chapter 1 ── -->
+    <div class="chapter" id="ch1">
+      <div class="chapter-inner">
+        <div class="chapter-badge badge-foundations">Foundations</div>
+        <h1 class="chapter-title">Core concepts — the vocabulary</h1>
+        <p class="chapter-lead">Git has 6 terms you absolutely must know. Everything else is built on these.</p>
+
+        <h3>Repository (repo)</h3>
+        <p>Your project folder, but with a hidden <code>.git</code> folder inside it. That hidden folder is Git's entire database — your full history. When you push to GitHub, this database goes with it.</p>
+
+        <h3>Commit</h3>
+        <p>A saved snapshot of your project at a moment in time. A commit has: the changes you made, a message describing them, and a unique ID (like <code>a3f8c12</code>). Your project history is a chain of commits.</p>
+
+        <div class="flow">
+          <div class="flow-box">Commit 1<small>Initial setup</small></div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-box">Commit 2<small>Add login page</small></div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-box">Commit 3<small>Fix button bug</small></div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-box highlight">HEAD<small>Where you are now</small></div>
+        </div>
+
+        <h3>Branch</h3>
+        <p>A parallel version of your project. Your main code lives on the <code>main</code> branch. You can create a new branch to try something — your main code is untouched until you merge.</p>
+
+        <h3>Staging area</h3>
+        <p>A "waiting room" for your changes. You <code>git add</code> files to stage them, then <code>git commit</code> saves everything staged. This lets you pick exactly which changes go into a commit.</p>
+
+        <h3>Push / Pull</h3>
+        <p><strong>Push</strong> = send your local commits to GitHub. <strong>Pull</strong> = download commits from GitHub to your machine. For solo work, you push to back up and pull on another device.</p>
+
+        <h3>Merge</h3>
+        <p>Combining a branch back into main. Git is smart about merging — it only looks at what changed, line by line.</p>
+      </div>
+      <div class="chapter-footer">
+        <button class="mark-done-btn" data-i="1">✦ Mark complete</button>
+        <div class="nav-btns">
+          <button class="nav-btn" onclick="go(0)">← Prev</button>
+          <button class="nav-btn next" onclick="go(2)">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Chapter 2 ── -->
+    <div class="chapter" id="ch2">
+      <div class="chapter-inner">
+        <div class="chapter-badge badge-foundations">Foundations</div>
+        <h1 class="chapter-title">First-time setup</h1>
+        <p class="chapter-lead">Do this once on your machine. You only need to do this one time ever.</p>
+
+        <h3>Step 1 — Install Git</h3>
+        <p>Download from <strong>git-scm.com</strong>. On Mac you may already have it. Run this to check:</p>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">Terminal</span><button class="copy-btn">Copy</button></div>
+          <pre>git --version</pre>
+        </div>
+
+        <h3>Step 2 — Tell Git who you are</h3>
+        <p>Git stamps every commit with your name and email. Use the same email as your GitHub account.</p>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">Terminal</span><button class="copy-btn">Copy</button></div>
+          <pre>git config --global user.name "Your Name"
+git config --global user.email "you@email.com"</pre>
+        </div>
+
+        <h3>Step 3 — Authenticate with GitHub</h3>
+        <p>Install the GitHub CLI — it handles login securely so you don't have to deal with SSH keys manually.</p>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">Terminal</span><button class="copy-btn">Copy</button></div>
+          <pre>gh auth login</pre>
+        </div>
+        <p>Follow the prompts. Choose HTTPS, and authenticate via browser. Once done, your machine can push and pull from GitHub without a password every time.</p>
+
+        <div class="callout success">
+          <span class="callout-icon">✓</span>
+          <div class="callout-body">After setup, run <code>git config --list</code> to verify your name and email are saved correctly.</div>
+        </div>
+
+        <h3>Step 4 — Set default branch name</h3>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">Terminal</span><button class="copy-btn">Copy</button></div>
+          <pre>git config --global init.defaultBranch main</pre>
+        </div>
+      </div>
+      <div class="chapter-footer">
+        <button class="mark-done-btn" data-i="2">✦ Mark complete</button>
+        <div class="nav-btns">
+          <button class="nav-btn" onclick="go(1)">← Prev</button>
+          <button class="nav-btn next" onclick="go(3)">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Chapter 3 ── -->
+    <div class="chapter" id="ch3">
+      <div class="chapter-inner">
+        <div class="chapter-badge badge-daily">Daily Use</div>
+        <h1 class="chapter-title">Your first repo — two ways to start</h1>
+        <p class="chapter-lead">Every project starts one of two ways. Pick based on where your code currently lives.</p>
+
+        <h3>Option A — Existing project on your computer</h3>
+        <p>Navigate into your project folder in the terminal, then:</p>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">Terminal — inside your project folder</span><button class="copy-btn">Copy</button></div>
+          <pre>git init                     <span class="comment"># creates the hidden .git folder</span>
+git add .                    <span class="comment"># stage all your current files</span>
+git commit -m "Initial commit"</pre>
+        </div>
+        <p>Then create a repo on GitHub (github.com → New repository), and link it:</p>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">Terminal</span><button class="copy-btn">Copy</button></div>
+          <pre>git remote add origin https://github.com/yourname/repo-name.git
+git push -u origin main</pre>
+        </div>
+
+        <h3>Option B — Start fresh from GitHub (recommended)</h3>
+        <p>Create the repo on GitHub first, then clone it to your machine. This is the cleanest approach.</p>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">Terminal</span><button class="copy-btn">Copy</button></div>
+          <pre>gh repo create my-app --public --clone
+cd my-app</pre>
+        </div>
+        <p>Or using the website: create repo → copy clone URL → then:</p>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">Terminal</span><button class="copy-btn">Copy</button></div>
+          <pre>git clone https://github.com/yourname/my-app.git
+cd my-app</pre>
+        </div>
+
+        <div class="callout info">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">The <code>-u origin main</code> flag in the first push sets the "upstream" — from that point on, just <code>git push</code> is enough, no need to specify every time.</div>
+        </div>
+      </div>
+      <div class="chapter-footer">
+        <button class="mark-done-btn" data-i="3">✦ Mark complete</button>
+        <div class="nav-btns">
+          <button class="nav-btn" onclick="go(2)">← Prev</button>
+          <button class="nav-btn next" onclick="go(4)">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Chapter 4 ── -->
+    <div class="chapter" id="ch4">
+      <div class="chapter-inner">
+        <div class="chapter-badge badge-daily">Daily Use</div>
+        <h1 class="chapter-title">The commit loop — your daily rhythm</h1>
+        <p class="chapter-lead">This is the loop you'll repeat dozens of times per day. Internalize this and you'll feel like a real developer.</p>
+
+        <div class="steps">
+          <div class="step"><div class="step-num">1</div><div class="step-text">Write or edit code</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">Check what changed</div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text">Stage the changes you want to commit</div></div>
+          <div class="step"><div class="step-num">4</div><div class="step-text">Write a commit message and commit</div></div>
+          <div class="step"><div class="step-num">5</div><div class="step-text">Push to GitHub when you want to back up</div></div>
+        </div>
+
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">The full loop in commands</span><button class="copy-btn">Copy</button></div>
+          <pre>git status                   <span class="comment"># see what files changed</span>
+git diff                     <span class="comment"># see exact line changes</span>
+git add index.html           <span class="comment"># stage a specific file</span>
+git add .                    <span class="comment"># OR stage everything changed</span>
+git commit -m "Add navbar component"
+git push                     <span class="comment"># send to GitHub</span></pre>
+        </div>
+
+        <h3>Writing good commit messages</h3>
+        <p>Use the format: <em>verb + what you did</em>. Start with a capital letter. Keep it under 72 characters.</p>
+        <div class="two-col">
+          <div class="card">
+            <div class="card-title green">✓ Good messages</div>
+            <p><code>Add login page</code><br><code>Fix crash on empty input</code><br><code>Update Tally dashboard layout</code><br><code>Remove unused imports</code></p>
+          </div>
+          <div class="card">
+            <div class="card-title red">✗ Bad messages</div>
+            <p><code>changes</code><br><code>fix</code><br><code>asdfasdf</code><br><code>updated stuff again</code></p>
+          </div>
+        </div>
+
+        <div class="callout info">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">Commit early, commit often. A commit is free. Committing every 20–30 minutes of meaningful work is healthy. You can always look back and see exactly what you did and why.</div>
+        </div>
+      </div>
+      <div class="chapter-footer">
+        <button class="mark-done-btn" data-i="4">✦ Mark complete</button>
+        <div class="nav-btns">
+          <button class="nav-btn" onclick="go(3)">← Prev</button>
+          <button class="nav-btn next" onclick="go(5)">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Chapter 5 ── -->
+    <div class="chapter" id="ch5">
+      <div class="chapter-inner">
+        <div class="chapter-badge badge-daily">Daily Use</div>
+        <h1 class="chapter-title">Push &amp; pull — syncing with GitHub</h1>
+        <p class="chapter-lead">How your local commits travel to the cloud, and how you bring remote changes down.</p>
+
+        <h3>Pushing your work to GitHub</h3>
+        <p>After one or more commits, push to GitHub to back them up:</p>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">Terminal</span><button class="copy-btn">Copy</button></div>
+          <pre>git push</pre>
+        </div>
+        <p>That's it. The <code>-u origin main</code> you set on the first push means future pushes are just <code>git push</code>.</p>
+
+        <h3>Pulling changes from GitHub</h3>
+        <p>If you work on multiple machines, or if you made a change directly on GitHub (like editing README), you need to pull before working:</p>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">Terminal</span><button class="copy-btn">Copy</button></div>
+          <pre>git pull</pre>
+        </div>
+
+        <div class="callout warn">
+          <span class="callout-icon">⚠</span>
+          <div class="callout-body">Always pull before you start working if there could be remote changes. This prevents merge conflicts from building up.</div>
+        </div>
+
+        <h3>Checking your status at any time</h3>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">Terminal</span><button class="copy-btn">Copy</button></div>
+          <pre>git status                          <span class="comment"># what's staged, unstaged, untracked</span>
+git log                             <span class="comment"># full commit history</span>
+git log --oneline                   <span class="comment"># compact history (much nicer)</span>
+git log --oneline --graph --all     <span class="comment"># visual branch history</span></pre>
+        </div>
+
+        <h3>Seeing what's on GitHub vs local</h3>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">Terminal</span><button class="copy-btn">Copy</button></div>
+          <pre>git fetch              <span class="comment"># download remote info without merging</span>
+git status             <span class="comment"># now shows "Your branch is X commits behind"</span></pre>
+        </div>
+
+        <div class="callout info">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body"><code>git fetch</code> is "check what's new". <code>git pull</code> is "check what's new AND apply it". Use fetch when you want to look before you merge.</div>
+        </div>
+      </div>
+      <div class="chapter-footer">
+        <button class="mark-done-btn" data-i="5">✦ Mark complete</button>
+        <div class="nav-btns">
+          <button class="nav-btn" onclick="go(4)">← Prev</button>
+          <button class="nav-btn next" onclick="go(6)">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Chapter 6 ── -->
+    <div class="chapter" id="ch6">
+      <div class="chapter-inner">
+        <div class="chapter-badge badge-branching">Branching</div>
+        <h1 class="chapter-title">What is a branch — visually</h1>
+        <p class="chapter-lead">A branch is a named pointer to a commit. When you branch off, you're creating a diverging timeline — your main code stays untouched while you work.</p>
+
+        <div class="branch-vis">
+<span class="bm">main</span>:    A ── B ── C ──────────────── G
+                    \                    /
+<span class="bf">feature</span>:           D ── E ── F ──'</div>
+
+        <p>A, B, C are commits on main. You branched off at C, made commits D, E, F on your feature branch. When ready, you merge back into G on main. The feature branch's work is now part of main.</p>
+
+        <h3>Creating and switching branches</h3>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">Terminal</span><button class="copy-btn">Copy</button></div>
+          <pre>git branch feature/login      <span class="comment"># create a branch</span>
+git switch feature/login      <span class="comment"># switch to it</span>
+
+<span class="comment"># Or do both in one command (most common):</span>
+git switch -c feature/login</pre>
+        </div>
+
+        <h3>Listing branches</h3>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">Terminal</span><button class="copy-btn">Copy</button></div>
+          <pre>git branch                   <span class="comment"># local branches</span>
+git branch -a                <span class="comment"># local + remote branches</span></pre>
+        </div>
+
+        <h3>The HEAD pointer</h3>
+        <p><code>HEAD</code> is just Git's way of saying "where am I right now." When you switch branches, HEAD moves. When you commit, HEAD advances to the new commit.</p>
+
+        <div class="callout info">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">Branch names are just labels. Use <code>feature/</code>, <code>fix/</code>, or <code>experiment/</code> as prefixes. Example: <code>feature/tally-categories</code>, <code>fix/login-crash</code>.</div>
+        </div>
+      </div>
+      <div class="chapter-footer">
+        <button class="mark-done-btn" data-i="6">✦ Mark complete</button>
+        <div class="nav-btns">
+          <button class="nav-btn" onclick="go(5)">← Prev</button>
+          <button class="nav-btn next" onclick="go(7)">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Chapter 7 ── -->
+    <div class="chapter" id="ch7">
+      <div class="chapter-inner">
+        <div class="chapter-badge badge-branching">Branching</div>
+        <h1 class="chapter-title">When to branch — the decision rule</h1>
+        <p class="chapter-lead">For solo projects, a simple rule: branch whenever you're working on something that could break what's already working.</p>
+
+        <div class="two-col">
+          <div class="card">
+            <div class="card-title green">Branch for this</div>
+            <p>New feature that takes more than 1 session<br><br>Experimenting with a different approach<br><br>Fixing a bug that requires touching multiple files<br><br>Redesigning a component<br><br>Trying a new library or architecture</p>
+          </div>
+          <div class="card">
+            <div class="card-title">Don't need to branch</div>
+            <p>Tiny text or style fix<br><br>Updating README<br><br>Quick one-line bug fix<br><br>Adding a comment or cleaning up whitespace</p>
+          </div>
+        </div>
+
+        <h3>A complete branch workflow</h3>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">Terminal</span><button class="copy-btn">Copy</button></div>
+          <pre>git switch main                      <span class="comment"># always start from main</span>
+git pull                             <span class="comment"># make sure it's up to date</span>
+
+git switch -c feature/dashboard      <span class="comment"># create + switch</span>
+
+<span class="comment"># ... do your work, make commits ...</span>
+git add .
+git commit -m "Add dashboard screen"
+
+git push -u origin feature/dashboard <span class="comment"># push the new branch</span>
+
+<span class="comment"># when done, merge back into main:</span>
+git switch main
+git merge feature/dashboard
+git push
+
+git branch -d feature/dashboard      <span class="comment"># delete (optional)</span></pre>
+        </div>
+
+        <div class="callout success">
+          <span class="callout-icon">✦</span>
+          <div class="callout-body">For Tally: create a branch for each screen you build. <code>feature/transactions-screen</code>, <code>feature/budget-categories</code>, etc. Each branch is one unit of work.</div>
+        </div>
+      </div>
+      <div class="chapter-footer">
+        <button class="mark-done-btn" data-i="7">✦ Mark complete</button>
+        <div class="nav-btns">
+          <button class="nav-btn" onclick="go(6)">← Prev</button>
+          <button class="nav-btn next" onclick="go(8)">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Chapter 8 ── -->
+    <div class="chapter" id="ch8">
+      <div class="chapter-inner">
+        <div class="chapter-badge badge-branching">Branching</div>
+        <h1 class="chapter-title">Merging &amp; conflicts</h1>
+        <p class="chapter-lead">How branches come back together — and what to do when Git can't figure it out on its own.</p>
+
+        <h3>Fast-forward merge (the easy case)</h3>
+        <p>If main hasn't moved since you branched, Git simply slides main forward to your branch tip. No merge commit, no conflict — it just works.</p>
+
+        <div class="branch-vis">
+Before: <span class="bm">main</span> → C,  <span class="bf">feature</span> → C → D → E
+After:  <span class="bm">main</span> → E  (fast-forwarded)</div>
+
+        <h3>Merge commit (when both branches moved)</h3>
+        <p>If main got new commits while you worked on your branch, Git creates a "merge commit" that ties both timelines together. Usually automatic.</p>
+
+        <h3>Merge conflicts</h3>
+        <p>A conflict happens when two branches edited the same line differently. Git can't decide which is right — it asks you.</p>
+
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">What a conflict looks like in a file</span><button class="copy-btn">Copy</button></div>
+          <pre>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD (your branch)
+backgroundColor: '#FF6B35',
+=======
+backgroundColor: '#2D3436',
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; main</pre>
+        </div>
+
+        <p>You manually edit the file to keep what you want (delete the markers), then:</p>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">Terminal</span><button class="copy-btn">Copy</button></div>
+          <pre>git add the-conflicted-file.js
+git commit -m "Resolve merge conflict in theme colors"</pre>
+        </div>
+
+        <div class="callout warn">
+          <span class="callout-icon">⚠</span>
+          <div class="callout-body">VS Code has a built-in merge conflict UI — you'll see "Accept Current Change / Accept Incoming" buttons. Use those, it's much easier than editing raw markers.</div>
+        </div>
+      </div>
+      <div class="chapter-footer">
+        <button class="mark-done-btn" data-i="8">✦ Mark complete</button>
+        <div class="nav-btns">
+          <button class="nav-btn" onclick="go(7)">← Prev</button>
+          <button class="nav-btn next" onclick="go(9)">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Chapter 9 ── -->
+    <div class="chapter" id="ch9">
+      <div class="chapter-inner">
+        <div class="chapter-badge badge-recovery">Recovery</div>
+        <h1 class="chapter-title">Undo &amp; rollback — your safety net</h1>
+        <p class="chapter-lead">This is where Git pays off. You can undo almost anything. Here are the scenarios from safest to most drastic.</p>
+
+        <h3>Undo staged changes (before committing)</h3>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">Terminal</span><button class="copy-btn">Copy</button></div>
+          <pre>git restore --staged index.html   <span class="comment"># unstage (keep your edits)</span>
+git restore index.html            <span class="comment"># discard edits entirely (gone!)</span></pre>
+        </div>
+        <div class="callout danger">
+          <span class="callout-icon">⛔</span>
+          <div class="callout-body"><code>git restore</code> without <code>--staged</code> permanently discards your local changes. No undo for this one.</div>
+        </div>
+
+        <h3>Undo the last commit (keep your changes)</h3>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">Terminal</span><button class="copy-btn">Copy</button></div>
+          <pre>git reset --soft HEAD~1    <span class="comment"># uncommit, keep files staged</span>
+git reset HEAD~1           <span class="comment"># uncommit, keep files unstaged</span></pre>
+        </div>
+
+        <h3>View history and jump to a past commit</h3>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">Terminal</span><button class="copy-btn">Copy</button></div>
+          <pre>git log --oneline          <span class="comment"># find the commit ID you want</span>
+git checkout a3f8c12       <span class="comment"># travel to that commit (read-only)</span>
+git switch main            <span class="comment"># come back to the present</span></pre>
+        </div>
+
+        <h3>Revert a commit (safe for shared repos)</h3>
+        <p>Creates a new commit that undoes a past one. Doesn't rewrite history — safe to use even after pushing.</p>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">Terminal</span><button class="copy-btn">Copy</button></div>
+          <pre>git revert a3f8c12         <span class="comment"># creates an undo commit</span></pre>
+        </div>
+
+        <h3>Hard reset (nuclear — destroys history after it)</h3>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">Terminal</span><button class="copy-btn">Copy</button></div>
+          <pre>git reset --hard a3f8c12   <span class="comment"># ⚠ erases commits after this point</span></pre>
+        </div>
+
+        <div class="callout warn">
+          <span class="callout-icon">⚠</span>
+          <div class="callout-body">If you've already pushed to GitHub, use <code>git revert</code> (safe) not <code>git reset --hard</code> (rewrites history). Rewriting pushed history causes problems.</div>
+        </div>
+      </div>
+      <div class="chapter-footer">
+        <button class="mark-done-btn" data-i="9">✦ Mark complete</button>
+        <div class="nav-btns">
+          <button class="nav-btn" onclick="go(8)">← Prev</button>
+          <button class="nav-btn next" onclick="go(10)">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Chapter 10 ── -->
+    <div class="chapter" id="ch10">
+      <div class="chapter-inner">
+        <div class="chapter-badge badge-github">GitHub Features</div>
+        <h1 class="chapter-title">.gitignore — what not to track</h1>
+        <p class="chapter-lead">Some files should never go into Git: build output, secret keys, dependencies, OS junk. The <code>.gitignore</code> file tells Git to skip them entirely.</p>
+
+        <h3>Create a .gitignore at your project root</h3>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">.gitignore</span><button class="copy-btn">Copy</button></div>
+          <pre><span class="comment"># Node / JavaScript</span>
+node_modules/
+dist/
+.env
+.env.local
+
+<span class="comment"># React Native / Expo</span>
+.expo/
+android/
+ios/
+
+<span class="comment"># OS files</span>
+.DS_Store
+Thumbs.db
+
+<span class="comment"># IDE</span>
+.vscode/settings.json
+.idea/</pre>
+        </div>
+
+        <div class="callout danger">
+          <span class="callout-icon">⛔</span>
+          <div class="callout-body">Never commit your <code>.env</code> file. It contains API keys and secrets. Add it to .gitignore from day one. If you accidentally pushed it — change those keys immediately, they're compromised.</div>
+        </div>
+
+        <h3>Quick way — use GitHub's built-in templates</h3>
+        <p>When creating a repo on GitHub, select "Add .gitignore" and choose your framework (Node, React Native, etc.). GitHub generates the right one for you.</p>
+
+        <h3>If you already committed something you shouldn't have</h3>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">Terminal</span><button class="copy-btn">Copy</button></div>
+          <pre>git rm --cached .env            <span class="comment"># stop tracking (keeps local file)</span>
+echo ".env" >> .gitignore       <span class="comment"># add to gitignore</span>
+git commit -m "Remove .env from tracking"</pre>
+        </div>
+      </div>
+      <div class="chapter-footer">
+        <button class="mark-done-btn" data-i="10">✦ Mark complete</button>
+        <div class="nav-btns">
+          <button class="nav-btn" onclick="go(9)">← Prev</button>
+          <button class="nav-btn next" onclick="go(11)">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Chapter 11 ── -->
+    <div class="chapter" id="ch11">
+      <div class="chapter-inner">
+        <div class="chapter-badge badge-github">GitHub Features</div>
+        <h1 class="chapter-title">README &amp; Issues — GitHub as a project tool</h1>
+        <p class="chapter-lead">GitHub isn't just a code host. It's a complete project management tool for solo developers.</p>
+
+        <h3>README.md</h3>
+        <p>The <code>README.md</code> is the homepage of your GitHub repo. Write it in Markdown. For Tally and your other apps, use it as your living project doc.</p>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">README.md structure for a personal project</span><button class="copy-btn">Copy</button></div>
+          <pre># Tally — Personal Finance Tracker
+
+A local-first offline finance tracker for Indian urban consumers.
+
+## Tech Stack
+- React Native + Expo
+- SQLite (local-first)
+- React Query
+
+## Running locally
+1. Clone the repo
+2. Run `npm install`
+3. Run `npx expo start`
+
+## Status: In development</pre>
+        </div>
+
+        <h3>Issues — your personal task tracker</h3>
+        <p>GitHub Issues are free and live right next to your code. Use them as your to-do list for the project.</p>
+        <div class="two-col">
+          <div class="card">
+            <div class="card-title">How to use Issues</div>
+            <p>Go to your repo → Issues → New Issue. Create one for every feature, bug, or improvement. Close it when done.</p>
+          </div>
+          <div class="card">
+            <div class="card-title">Linking commits to issues</div>
+            <p>In a commit message: <code>Fix login crash (closes #12)</code> — GitHub auto-closes Issue #12 when that commit is pushed to main.</p>
+          </div>
+        </div>
+
+        <h3>GitHub Projects (Kanban board)</h3>
+        <p>Under the Projects tab, create a board (To Do → In Progress → Done) and link Issues to it. For solo dev on Tally, this is a lightweight project manager with no extra tools needed.</p>
+      </div>
+      <div class="chapter-footer">
+        <button class="mark-done-btn" data-i="11">✦ Mark complete</button>
+        <div class="nav-btns">
+          <button class="nav-btn" onclick="go(10)">← Prev</button>
+          <button class="nav-btn next" onclick="go(12)">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Chapter 12 ── -->
+    <div class="chapter" id="ch12">
+      <div class="chapter-inner">
+        <div class="chapter-badge badge-github">GitHub Features</div>
+        <h1 class="chapter-title">GitHub Actions — automation for free</h1>
+        <p class="chapter-lead">GitHub Actions lets you run code automatically when you push. The most useful thing for solo devs: auto-linting and auto-deploy on every push.</p>
+
+        <h3>How it works</h3>
+        <p>You write a YAML file in <code>.github/workflows/</code>. GitHub reads it and runs whatever you specify — on every push, PR, or on a schedule.</p>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">.github/workflows/lint.yml — run ESLint on every push</span><button class="copy-btn">Copy</button></div>
+          <pre>name: Lint
+
+on: [push]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install
+      - run: npm run lint</pre>
+        </div>
+        <p>Push this file, and GitHub will run your linter every time you push. You'll see a green ✓ or red ✗ on every commit in GitHub.</p>
+
+        <h3>Other useful Actions for personal projects</h3>
+        <div class="two-col">
+          <div class="card">
+            <div class="card-title">Auto-deploy</div>
+            <p>Deploy to Vercel, Netlify, or Expo on every push to main. Most platforms have official Actions.</p>
+          </div>
+          <div class="card">
+            <div class="card-title">Run tests</div>
+            <p>If you write tests (Jest, etc.), run them on every push so you catch regressions instantly.</p>
+          </div>
+        </div>
+      </div>
+      <div class="chapter-footer">
+        <button class="mark-done-btn" data-i="12">✦ Mark complete</button>
+        <div class="nav-btns">
+          <button class="nav-btn" onclick="go(11)">← Prev</button>
+          <button class="nav-btn next" onclick="go(13)">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Chapter 13 ── -->
+    <div class="chapter" id="ch13">
+      <div class="chapter-inner">
+        <div class="chapter-badge badge-daily">Your Workflow</div>
+        <h1 class="chapter-title">Your complete daily workflow</h1>
+        <p class="chapter-lead">Here's exactly how to use Git for every project — Tally or anything else. Follow this and you'll build real developer habits fast.</p>
+
+        <h3>Starting a work session</h3>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">Terminal</span><button class="copy-btn">Copy</button></div>
+          <pre>cd tally                     <span class="comment"># go to your project</span>
+git pull                     <span class="comment"># sync with GitHub</span>
+git log --oneline -5         <span class="comment"># remind yourself where you left off</span></pre>
+        </div>
+
+        <h3>Working on a new feature</h3>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">Terminal</span><button class="copy-btn">Copy</button></div>
+          <pre>git switch -c feature/budget-screen
+<span class="comment"># ... write code ...</span>
+git status
+git add .
+git commit -m "Add budget categories screen"
+git push -u origin feature/budget-screen</pre>
+        </div>
+
+        <h3>Done with the feature — merge it</h3>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">Terminal</span><button class="copy-btn">Copy</button></div>
+          <pre>git switch main
+git pull
+git merge feature/budget-screen
+git push
+git branch -d feature/budget-screen</pre>
+        </div>
+
+        <h3>Quick fixes — straight to main</h3>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">Terminal</span><button class="copy-btn">Copy</button></div>
+          <pre>git switch main
+<span class="comment"># fix the thing</span>
+git add .
+git commit -m "Fix typo in onboarding copy"
+git push</pre>
+        </div>
+
+        <div class="callout success">
+          <span class="callout-icon">✦</span>
+          <div class="callout-body">Rule of thumb: if a feature takes more than one sitting to build, give it a branch. If it takes 10 minutes, commit to main.</div>
+        </div>
+
+        <h3>At the end of every session</h3>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">Terminal</span><button class="copy-btn">Copy</button></div>
+          <pre>git status                   <span class="comment"># make sure nothing is uncommitted</span>
+git push                     <span class="comment"># back up everything to GitHub</span></pre>
+        </div>
+
+        <div class="callout info">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">Make it a habit: before you close your laptop, <code>git status</code> → <code>git push</code>. You'll never lose work again.</div>
+        </div>
+      </div>
+      <div class="chapter-footer">
+        <button class="mark-done-btn" data-i="13">✦ Mark complete</button>
+        <div class="nav-btns">
+          <button class="nav-btn" onclick="go(12)">← Prev</button>
+          <button class="nav-btn next" disabled>All done ✓</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content-scroll -->
+</div><!-- /main -->
+
+<script>
+const CHAPTERS = 14;
+const SECTIONS = ['Foundations','Foundations','Foundations','Daily Use','Daily Use','Daily Use','Branching','Branching','Branching','Recovery','GitHub Features','GitHub Features','GitHub Features','Your Workflow'];
+const TITLES = ['Git vs GitHub','Core concepts','First-time setup','Your first repo','The commit loop','Push & pull','What is a branch','When to branch','Merge & conflicts','Undo & rollback','.gitignore','README & Issues','GitHub Actions','Your workflow'];
+
+let current = 0;
+let done = new Set(JSON.parse(localStorage.getItem('gh-done') || '[]'));
+
+function go(i) {
+  if (i < 0 || i >= CHAPTERS) return;
+  document.querySelectorAll('.chapter').forEach((el, j) => el.classList.toggle('active', j === i));
+  document.querySelectorAll('.nav-item').forEach((el, j) => el.classList.toggle('active', j === i));
+  document.getElementById('tb-section').textContent = SECTIONS[i];
+  document.getElementById('tb-title').textContent = TITLES[i];
+  document.getElementById('scroll-area').scrollTop = 0;
+  current = i;
+  const navItem = document.querySelector(`.nav-item[data-i="${i}"]`);
+  if (navItem) navItem.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+}
+
+function markDone(i) {
+  if (done.has(i)) {
+    undoDone(i);
+  } else {
+    done.add(i);
+    localStorage.setItem('gh-done', JSON.stringify([...done]));
+    updateProgress();
+    const btn = document.querySelector(`.mark-done-btn[data-i="${i}"]`);
+    if (btn) { btn.textContent = '✓ Complete'; btn.classList.add('done'); }
+    const navItem = document.querySelector(`.nav-item[data-i="${i}"]`);
+    if (navItem) {
+      navItem.classList.add('done');
+      navItem.querySelector('.nav-dot').textContent = '✓';
+    }
+  }
+}
+
+function undoDone(i) {
+  done.delete(i);
+  localStorage.setItem('gh-done', JSON.stringify([...done]));
+  updateProgress();
+  const btn = document.querySelector(`.mark-done-btn[data-i="${i}"]`);
+  if (btn) { btn.textContent = '✦ Mark complete'; btn.classList.remove('done'); }
+  const navItem = document.querySelector(`.nav-item[data-i="${i}"]`);
+  if (navItem) {
+    navItem.classList.remove('done');
+    navItem.querySelector('.nav-dot').textContent = (i + 1);
+  }
+}
+
+function updateProgress() {
+  const count = done.size;
+  document.getElementById('prog-count').textContent = `${count} / ${CHAPTERS}`;
+  document.getElementById('prog-fill').style.width = `${(count / CHAPTERS) * 100}%`;
+}
+
+function applyStoredProgress() {
+  done.forEach(i => {
+    const btn = document.querySelector(`.mark-done-btn[data-i="${i}"]`);
+    if (btn) { btn.textContent = '✓ Complete'; btn.classList.add('done'); }
+    const navItem = document.querySelector(`.nav-item[data-i="${i}"]`);
+    if (navItem) {
+      navItem.classList.add('done');
+      navItem.querySelector('.nav-dot').textContent = '✓';
+    }
+  });
+  updateProgress();
+}
+
+document.querySelectorAll('.mark-done-btn').forEach(btn => {
+  btn.addEventListener('click', () => markDone(+btn.dataset.i));
+});
+
+document.querySelectorAll('.nav-item').forEach(el => {
+  el.addEventListener('click', () => go(+el.dataset.i));
+});
+
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const pre = btn.closest('.code-block').querySelector('pre');
+    const text = pre.innerText || pre.textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1800);
+    });
+  });
+});
+
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  if (e.key === 'ArrowRight') go(current + 1);
+  if (e.key === 'ArrowLeft') go(current - 1);
+});
+
+applyStoredProgress();
+</script>
+</body>
+</html>
