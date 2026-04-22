@@ -344,7 +344,7 @@ git push                     <span class="comment"># send to GitHub</span></pre>
         <div class="two-col">
           <div class="card">
             <div class="card-title green">✓ Good messages</div>
-            <p><code>Add login page</code><br><code>Fix crash on empty input</code><br><code>Update Tally dashboard layout</code><br><code>Remove unused imports</code></p>
+            <p><code>Add login page</code><br><code>Fix crash on empty input</code><br><code>Update dashboard layout</code><br><code>Remove unused imports</code></p>
           </div>
           <div class="card">
             <div class="card-title red">✗ Bad messages</div>
@@ -459,7 +459,7 @@ git branch -a                <span class="comment"># local + remote branches</sp
 
         <div class="callout info">
           <span class="callout-icon">💡</span>
-          <div class="callout-body">Branch names are just labels. Use <code>feature/</code>, <code>fix/</code>, or <code>experiment/</code> as prefixes. Example: <code>feature/tally-categories</code>, <code>fix/login-crash</code>.</div>
+          <div class="callout-body">Branch names are just labels. Use <code>feature/</code>, <code>fix/</code>, or <code>experiment/</code> as prefixes. Example: <code>feature/dark-mode</code>, <code>fix/login-crash</code>.</div>
         </div>
       </div>
       <div class="chapter-footer">
@@ -513,7 +513,7 @@ git branch -d feature/dashboard      <span class="comment"># delete (optional)</
 
         <div class="callout success">
           <span class="callout-icon">✦</span>
-          <div class="callout-body">For Tally: create a branch for each screen you build. <code>feature/transactions-screen</code>, <code>feature/budget-categories</code>, etc. Each branch is one unit of work.</div>
+          <div class="callout-body">Create a branch for each feature or screen you build. <code>feature/user-profile</code>, <code>feature/search-page</code>, etc. Each branch is one unit of work.</div>
         </div>
       </div>
       <div class="chapter-footer">
@@ -698,12 +698,12 @@ git commit -m "Remove .env from tracking"</pre>
         <p class="chapter-lead">GitHub isn't just a code host. It's a complete project management tool for solo developers.</p>
 
         <h3>README.md</h3>
-        <p>The <code>README.md</code> is the homepage of your GitHub repo. Write it in Markdown. For Tally and your other apps, use it as your living project doc.</p>
+        <p>The <code>README.md</code> is the homepage of your GitHub repo. Write it in Markdown. Use it as your living project documentation.</p>
         <div class="code-block">
           <div class="code-header"><span class="code-lang">README.md structure for a personal project</span><button class="copy-btn">Copy</button></div>
-          <pre># Tally — Personal Finance Tracker
+          <pre># My App — A Project Name
 
-A local-first offline finance tracker for Indian urban consumers.
+A brief description of what your project does.
 
 ## Tech Stack
 - React Native + Expo
@@ -732,7 +732,7 @@ A local-first offline finance tracker for Indian urban consumers.
         </div>
 
         <h3>GitHub Projects (Kanban board)</h3>
-        <p>Under the Projects tab, create a board (To Do → In Progress → Done) and link Issues to it. For solo dev on Tally, this is a lightweight project manager with no extra tools needed.</p>
+        <p>Under the Projects tab, create a board (To Do → In Progress → Done) and link Issues to it. For solo development, this is a lightweight project manager with no extra tools needed.</p>
       </div>
       <div class="chapter-footer">
         <button class="mark-done-btn" data-i="11">✦ Mark complete</button>
@@ -797,12 +797,12 @@ jobs:
       <div class="chapter-inner">
         <div class="chapter-badge badge-daily">Your Workflow</div>
         <h1 class="chapter-title">Your complete daily workflow</h1>
-        <p class="chapter-lead">Here's exactly how to use Git for every project — Tally or anything else. Follow this and you'll build real developer habits fast.</p>
+        <p class="chapter-lead">Here's exactly how to use Git for every project. Follow this and you'll build real developer habits fast.</p>
 
         <h3>Starting a work session</h3>
         <div class="code-block">
           <div class="code-header"><span class="code-lang">Terminal</span><button class="copy-btn">Copy</button></div>
-          <pre>cd tally                     <span class="comment"># go to your project</span>
+          <pre>cd my-app                    <span class="comment"># go to your project</span>
 git pull                     <span class="comment"># sync with GitHub</span>
 git log --oneline -5         <span class="comment"># remind yourself where you left off</span></pre>
         </div>
@@ -810,12 +810,12 @@ git log --oneline -5         <span class="comment"># remind yourself where you l
         <h3>Working on a new feature</h3>
         <div class="code-block">
           <div class="code-header"><span class="code-lang">Terminal</span><button class="copy-btn">Copy</button></div>
-          <pre>git switch -c feature/budget-screen
+          <pre>git switch -c feature/dashboard
 <span class="comment"># ... write code ...</span>
 git status
 git add .
-git commit -m "Add budget categories screen"
-git push -u origin feature/budget-screen</pre>
+git commit -m "Add dashboard screen"
+git push -u origin feature/dashboard</pre>
         </div>
 
         <h3>Done with the feature — merge it</h3>
@@ -823,9 +823,9 @@ git push -u origin feature/budget-screen</pre>
           <div class="code-header"><span class="code-lang">Terminal</span><button class="copy-btn">Copy</button></div>
           <pre>git switch main
 git pull
-git merge feature/budget-screen
+git merge feature/dashboard
 git push
-git branch -d feature/budget-screen</pre>
+git branch -d feature/dashboard</pre>
         </div>
 
         <h3>Quick fixes — straight to main</h3>
