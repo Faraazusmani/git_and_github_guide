@@ -1,6 +1,6 @@
-const CHAPTERS = 14;
-const SECTIONS = ['Foundations','Foundations','Foundations','Daily Use','Daily Use','Daily Use','Branching','Branching','Branching','Recovery','GitHub Features','GitHub Features','GitHub Features','Your Workflow'];
-const TITLES = ['Git vs GitHub','Core concepts','First-time setup','Your first repo','The commit loop','Push & pull','What is a branch','When to branch','Merge & conflicts','Undo & rollback','.gitignore','README & Issues','GitHub Actions','Your workflow'];
+const CHAPTERS = 15;
+const SECTIONS = ['Foundations','Foundations','Foundations','Daily Use','Daily Use','Daily Use','Branching','Branching','Branching','Recovery','GitHub Features','GitHub Features','GitHub Features','Your Workflow','Reference'];
+const TITLES = ['Git vs GitHub','Core concepts','First-time setup','Your first repo','The commit loop','Push & pull','What is a branch','When to branch','Merge & conflicts','Undo & rollback','.gitignore','README & Issues','GitHub Actions','Your workflow','Command reference'];
 
 let current = 0;
 let done = new Set(JSON.parse(localStorage.getItem('gh-done') || '[]'));

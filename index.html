@@ -103,6 +103,10 @@
       <div class="nav-dot">14</div>
       <span class="nav-label">Your workflow</span>
     </div>
+    <div class="nav-item" data-i="14">
+      <div class="nav-dot">15</div>
+      <span class="nav-label">Commands cheat sheet</span>
+    </div>
   </div>
 </aside>
 
@@ -855,6 +859,137 @@ git push                     <span class="comment"># back up everything to GitHu
         <button class="mark-done-btn" data-i="13">✦ Mark complete</button>
         <div class="nav-btns">
           <button class="nav-btn" onclick="go(12)">← Prev</button>
+          <button class="nav-btn next" onclick="go(14)">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Chapter 14 ── -->
+    <div class="chapter" id="ch14">
+      <div class="chapter-inner">
+        <div class="chapter-badge badge-github">Reference</div>
+        <h1 class="chapter-title">Git commands cheat sheet — the essentials</h1>
+        <p class="chapter-lead">The 12 commands you'll actually use on a daily basis. Bookmark this page. When you forget how to do something, it'll be here.</p>
+
+        <h3>Setup (one time)</h3>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">Terminal</span><button class="copy-btn">Copy</button></div>
+          <pre>git config --global user.name "Your Name"
+git config --global user.email "you@email.com"
+git config --global init.defaultBranch main</pre>
+        </div>
+
+        <h3>1. Check status</h3>
+        <p>See what's changed, what's staged, what's not tracked. Use this constantly.</p>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">Terminal</span><button class="copy-btn">Copy</button></div>
+          <pre>git status</pre>
+        </div>
+
+        <h3>2. Add files (staging)</h3>
+        <p>Add files or specific changes to the staging area before committing.</p>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">Terminal</span><button class="copy-btn">Copy</button></div>
+          <pre>git add index.html              <span class="comment"># stage a specific file</span>
+git add .                       <span class="comment"># stage all changes</span></pre>
+        </div>
+
+        <h3>3. Commit</h3>
+        <p>Save all staged changes with a message. This creates a snapshot of your project.</p>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">Terminal</span><button class="copy-btn">Copy</button></div>
+          <pre>git commit -m "Add login form"</pre>
+        </div>
+
+        <h3>4. Push</h3>
+        <p>Send your local commits to GitHub. Back up your work.</p>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">Terminal</span><button class="copy-btn">Copy</button></div>
+          <pre>git push                        <span class="comment"># after setup once</span>
+git push -u origin main         <span class="comment"># first push to a new branch</span></pre>
+        </div>
+
+        <h3>5. Pull</h3>
+        <p>Download changes from GitHub to your machine. Do this before starting work.</p>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">Terminal</span><button class="copy-btn">Copy</button></div>
+          <pre>git pull</pre>
+        </div>
+
+        <h3>6. View commit history</h3>
+        <p>See all your past commits. Find commit IDs to reference later.</p>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">Terminal</span><button class="copy-btn">Copy</button></div>
+          <pre>git log --oneline               <span class="comment"># compact history</span>
+git log --oneline --graph --all <span class="comment"># with branch visualization</span></pre>
+        </div>
+
+        <h3>7. Create a branch</h3>
+        <p>Create a separate timeline for a feature or experiment.</p>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">Terminal</span><button class="copy-btn">Copy</button></div>
+          <pre>git branch feature/login        <span class="comment"># create</span>
+git switch feature/login        <span class="comment"># switch to it</span>
+
+git switch -c feature/login     <span class="comment"># create + switch (one command)</span></pre>
+        </div>
+
+        <h3>8. List branches</h3>
+        <p>See all your branches — local and remote.</p>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">Terminal</span><button class="copy-btn">Copy</button></div>
+          <pre>git branch                      <span class="comment"># local only</span>
+git branch -a                   <span class="comment"># all branches</span></pre>
+        </div>
+
+        <h3>9. Merge a branch</h3>
+        <p>Combine a branch back into main. Switch to main first, then merge.</p>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">Terminal</span><button class="copy-btn">Copy</button></div>
+          <pre>git switch main
+git pull
+git merge feature/login
+git push</pre>
+        </div>
+
+        <h3>10. Undo staged changes</h3>
+        <p>Remove files from staging without losing your edits.</p>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">Terminal</span><button class="copy-btn">Copy</button></div>
+          <pre>git restore --staged index.html</pre>
+        </div>
+
+        <h3>11. Discard local changes</h3>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">Terminal</span><button class="copy-btn">Copy</button></div>
+          <pre>git restore index.html          <span class="comment"># discard edits to one file</span>
+git restore .                   <span class="comment"># discard all uncommitted changes</span></pre>
+        </div>
+
+        <h3>12. Undo the last commit</h3>
+        <p>Uncommit without losing your work.</p>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">Terminal</span><button class="copy-btn">Copy</button></div>
+          <pre>git reset HEAD~1                <span class="comment"># undo last commit (keep changes)</span></pre>
+        </div>
+
+        <h3>Bonus: See differences</h3>
+        <p>View exactly what changed line-by-line.</p>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">Terminal</span><button class="copy-btn">Copy</button></div>
+          <pre>git diff                        <span class="comment"># unstaged changes</span>
+git diff --staged               <span class="comment"># staged changes</span></pre>
+        </div>
+
+        <div class="callout success">
+          <span class="callout-icon">✓</span>
+          <div class="callout-body">You now know everything you need to use Git like a professional developer. The rest is just practice. Keep these 12 commands in mind and you're unstoppable.</div>
+        </div>
+      </div>
+      <div class="chapter-footer">
+        <button class="mark-done-btn" data-i="14">✦ Mark complete</button>
+        <div class="nav-btns">
+          <button class="nav-btn" onclick="go(13)">← Prev</button>
           <button class="nav-btn next" disabled>All done ✓</button>
         </div>
       </div>
